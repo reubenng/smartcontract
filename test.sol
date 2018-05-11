@@ -26,7 +26,7 @@ contract JanKenPonBet {
 	function() public payable {}
 
 	// The constructor
-	function JanKenPonBet(uint256 _minimumBetValue) public {
+	constructor(uint256 _minimumBetValue) public {
 		// msg.sender is a value defined by the user when contract is executed, in this case the address
 		owner = msg.sender;
 
