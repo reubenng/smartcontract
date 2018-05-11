@@ -2,13 +2,13 @@ pragma solidity ^0.4.0;
 
 // How to use game part
 // 1. Deploy and go to 'Run' tab on the right hand side.
-// 2. Play as first player, select any account address.
+// 2. To play as first player, select any account address.
 // 3. Enter an action number into the 'play' field, 0 for rock, 1 for paper, 3 for scissors.
 // 4. Now if you're still using the same account and click 'play' again you'll get an error 
 //     because you've already played.  If you click on 'Result' you'll get error as well 
 //     because only 1 player has played, need a second player to show result.
 // 5. Now switch to another account as player 2.
-// 6. Playing as 2nd player, enter an action number into the 'play' field. Again if you 
+// 6. To play as 2nd player, enter an action number into the 'play' field. Again if you 
 //     press 'play' again you'll get error because you've already played.
 // 7. After the 2nd player has played, you can now click 'Result'.
 // 8. Click on the latest console message to show the log, you'll see both players' actions revealed.
