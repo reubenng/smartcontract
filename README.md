@@ -12,7 +12,7 @@ There is no need to actually deploy the contract and build frontend app (for now
 - Set ‘played’ bool true after he selected an option (0/1/2)
 - Store all players’ actions as private
 - After 1st player played, wait for a 2nd player
-- After 2nd player played, output result
+- After 2nd player played, output result, 1: player1 wins, 2: player2 wins, 3: no winner
 - After output result, restore ‘played’ bool to false
 
 #### Betting Part (COMPLETED)
