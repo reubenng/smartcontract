@@ -47,12 +47,12 @@ contract JanKenPonBet {
 		return false;
 	}
 
-	// This allows for a bet of either 1 or 2 (i.e. representing the players)
+	// This allows for a bet of either 1, 2 (i.e. representing the players) or 3 (i.e. a draw)
 	// The "payable" modifier means this function can receive ether when executed
 	function bet(uint256 playerBettedOn) public payable {
 		// "require" is basically an if statement that must return true. If false ether paid is reverted to the sender
 		require(!checkBetterBetted(msg.sender));
-		require(playerBettedOn == 1 || playerBettedOn == 2);
+		require(playerBettedOn == 1 || playerBettedOn == 2 || playerBettedOn == 3);
 		require(msg.value >= minimumBetValue); // msg.value is the user's ether amount
 
 		betterInfo[msg.sender].betAmount = msg.value;
@@ -62,7 +62,7 @@ contract JanKenPonBet {
 		totalBetValue += msg.value;
 	}
 
-	// Takes the winner and changes it to a number (either 1 or 2) and distributes the prize to correct bets
+	// Takes the winner and changes it to a number (1 or 2 for a winner or 3 for a draw) and distributes the prize to correct bets
 	function generateWinner() public {
 		// TODO: write a function that deals with returning the player number from the other contract
 		// 		 that conducts the JanKenPon match
