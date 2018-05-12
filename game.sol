@@ -12,7 +12,7 @@ pragma solidity ^0.4.0;
 //     press 'play' again you'll get error because you've already played.
 // 7. After the 2nd player has played, you can now click 'Result'.
 // 8. Click on the latest console message to show the log, you'll see both players' actions revealed.
-// 9. At the bottom part for showing winner, "winner": 0 is no winner, 1 if player 1 wins, 2 if player 2 wins
+// 9. At the bottom part for showing winner, "winner": 1 if player 1 wins, 2 if player 2 wins, 3 is no winner
 
 contract JanKenPonBet {
 	address public owner; // owner of contract, can use to implement special rights
@@ -51,7 +51,7 @@ contract JanKenPonBet {
     // compare actions for deciding winner
     function game(uint one, uint two) internal returns(uint) { // pass in actions from both player
         if (one == two) { // tie
-            return 0;
+            return 3;
         } 
         if (one == 0) { // rock
             if (two == 2) { // scissors
