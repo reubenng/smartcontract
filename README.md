@@ -17,9 +17,9 @@ There is no need to actually deploy the contract and build frontend app (for now
 
 #### Betting Part (COMPLETED)
 - All address starts with 3 tokens
-- Have 3 options to bet (0: player 1, 1: player 2)
-- Only player with tokens can bet
-- Decrement player’s token count by 1 after selecting a bet
+- Have 3 options to bet (1: player 1, 2: player 2, 3: draw)
+- Only better with tokens can bet
+- Decrement better’s token count by 1 after selecting a bet
 - Payout when game result is revealed
 - If draw, increment better’s token count by 1, if win increment by 2
 
