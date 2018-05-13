@@ -1,4 +1,4 @@
-pragma solidity ^0.4.0;
+pragma solidity ^0.4.22;
 
 // How to use game part
 // 1. Deploy and go to 'Run' tab on the right hand side.
@@ -29,7 +29,13 @@ contract JanKenPonBet {
     
     uint constant feePercentage = 98; // 98%, so 2% betting fee
     
-    event revealActions(string player1action, string player2action, string winner);// reveal game results
+    // reveal game results
+    event revealActions(string player1action, string player2action, string winner);
+    
+    // reveal bet winners
+    event revealBetWinners(address better, uint256 betAmount, uint256 wonAmount);
+    
+    event log_num_winners(uint number_of_winners);
     
     struct Action { // struct for storing available action to play, rock/paper/scissors
         string name;
@@ -77,7 +83,7 @@ contract JanKenPonBet {
 
     // for selecting actions
     function play(uint actionIndex) public payable {
-        require(actionIndex < actions.length); // check if move is valid
+        require(actionIndex < actions.length, "actionIndex must be 0, 1, or 2"); // check if move is valid
         if (player1move == 255) { // if no first player
             player1move = actionIndex; // store as player1's action
             player1Add = msg.sender;  // stores Player1 Address
@@ -86,7 +92,7 @@ contract JanKenPonBet {
             }
         } else { // first player already played
             // check if player1 != player2
-            require(msg.sender != player1Add); // could remove to save gas
+            require(msg.sender != player1Add, "You cannot be both Player1 and Player2."); // could remove to save gas
             
             if (msg.value != 0) {
                 bet(2);
@@ -133,7 +139,7 @@ contract JanKenPonBet {
 	function() public payable {}
 	
 	modifier onlyOwner() {
-        require (msg.sender == owner);
+        require (msg.sender == owner, "You are not the owner.");
         _;
     }
 
@@ -158,9 +164,9 @@ contract JanKenPonBet {
 	// The "payable" modifier means this function can receive ether when executed
 	function bet(uint256 playerBettedOn) public payable {
 		// "require" is basically an if statement that must return true. If false ether paid is reverted to the sender
-		require(!checkBetterBetted(msg.sender));
-		require(playerBettedOn >= 1 && playerBettedOn <= 3);
-		require(msg.value >= minimumBetValue); // msg.value is the user's ether amount
+		require(!checkBetterBetted(msg.sender), "You have already betted in this game.");
+		require(playerBettedOn >= 1 && playerBettedOn <= 3, "playerBettedOn must be 1, 2, or 3.");
+		require(msg.value >= minimumBetValue, "You must bet more than minimumBetValue."); // msg.value is the user's ether amount
 
 		betterInfo[msg.sender].betAmount = msg.value;
 		betterInfo[msg.sender].playerBettedOn = playerBettedOn;
@@ -188,6 +194,8 @@ contract JanKenPonBet {
 				numberOfWinners++;
 			}
 		}
+		
+		emit log_num_winners(numberOfWinners);
 
         if(numberOfWinners == 0) {
             // no one wins, return all the money (minus a fee of course)
@@ -202,14 +210,22 @@ contract JanKenPonBet {
         // Clear all the betters' addresses - the game is done for now
 		betters.length = 0;
 
+        // initalize outside the loop to save gas
         address winner;
+        uint256 betval;
+        uint256 winamount;
         
 		for (uint256 j = 0; j < numberOfWinners; j++) {
 			// Check that there is in fact a winner for this round then send out the winnings
 			winner = winners[j];
-			if (winner != address(0)) winner.transfer(totalBetValue
-			    * betterInfo[winner].betAmount / numberOfWinningShares
-			    * feePercentage / 100);
+			betval = betterInfo[winner].betAmount;
+			if (winner != address(0)) {
+			    winamount = totalBetValue
+			        * betval / numberOfWinningShares
+			        * feePercentage / 100;
+			    winner.transfer(winamount);
+			    emit revealBetWinners(winner, betval, winamount);
+			}
 			// no actual need to delete these, but we get a gas refund!
 			delete betterInfo[winner]; 
 		}
