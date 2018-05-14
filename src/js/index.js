@@ -13,12 +13,12 @@ class App extends React.Component {
 	 maxAmountOfBets: 0
       }
       if(typeof web3 != 'undefined'){
-        console.log("Using web3 detected from external source like Metamask")
+        console.log("Using this.web3 detected from external source like Metamask")
         this.web3 = new Web3(web3.currentProvider)
       } else{
         this.web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:8545"))
       }
-      const MyContract = web3.eth.contract(
+      const MyContract = this.web3.eth.contract(
 [{"constant":false,"inputs":[],"name":"withdraw","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[],"name":"kill","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"totalBetValue","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"minimumBetValue","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"player1Add","outputs":[{"name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"actionIndex","type":"uint256"}],"name":"play","outputs":[],"payable":true,"stateMutability":"payable","type":"function"},{"constant":false,"inputs":[{"name":"playerBettedOn","type":"uint256"}],"name":"bet","outputs":[],"payable":true,"stateMutability":"payable","type":"function"},{"constant":true,"inputs":[{"name":"","type":"uint256"}],"name":"actions","outputs":[{"name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"","type":"address"}],"name":"betterInfo","outputs":[{"name":"betAmount","type":"uint256"},{"name":"playerBettedOn","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"owner","outputs":[{"name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"","type":"uint256"}],"name":"betters","outputs":[{"name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"better","type":"address"}],"name":"checkBetterBetted","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"","type":"uint256"}],"name":"winner_string","outputs":[{"name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"maxAmountOfBets","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"inputs":[],"payable":false,"stateMutability":"nonpayable","type":"constructor"},{"payable":true,"stateMutability":"payable","type":"fallback"},{"anonymous":false,"inputs":[{"indexed":false,"name":"player1action","type":"string"},{"indexed":false,"name":"player2action","type":"string"},{"indexed":false,"name":"winner","type":"string"}],"name":"revealActions","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"name":"better","type":"address"},{"indexed":false,"name":"betAmount","type":"uint256"},{"indexed":false,"name":"wonAmount","type":"uint256"}],"name":"revealBetWinners","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"name":"number_of_winners","type":"uint256"}],"name":"log_num_winners","type":"event"}])
 
 	   
@@ -34,14 +34,14 @@ updateState(){
       this.state.ContractInstance.minimumBetValue((err, result) => {
          if(result != null){
             this.setState({
-               minimumBet: parseFloat(web3.fromWei(result, 'ether'))
+               minimumBet: parseFloat(this.web3.fromWei(result, 'ether'))
             })
          }
       })
       this.state.ContractInstance.totalBetValue((err, result) => {
          if(result != null){
             this.setState({
-               totalBet: parseFloat(web3.fromWei(result, 'ether'))
+               totalBet: parseFloat(this.web3.fromWei(result, 'ether'))
             })
          }
       });
@@ -79,11 +79,11 @@ updateState(){
                       <li> <strong>Better</strong>:
                         {winner["args"]["better"]} <br/></li> 
                       <li> <strong>Betted</strong>:
-                        {parseFloat(web3.fromWei(
+                        {parseFloat(this.web3.fromWei(
                           winner["args"]["betAmount"], 'ether'))} ether <br/>
                       </li> 
                       <li> <strong>Won</strong>:
-                        {parseFloat(web3.fromWei(
+                        {parseFloat(this.web3.fromWei(
                           winner["args"]["wonAmount"], 'ether'))} ether<br/>
                       </li> 
                     </ul>
@@ -98,7 +98,7 @@ updateState(){
           });
           var lwarg = lastWin["args"];
 	  var blockNumber = lastWin["blockNumber"];
-	  web3.eth.getBlock(blockNumber, (error, block) => {
+	  this.web3.eth.getBlock(blockNumber, (error, block) => {
             if (error)
               console.log('Error in getBlock event handler: ' + error);
             else
@@ -126,8 +126,8 @@ if(parseFloat(bet) != 0.0 && parseFloat(bet) < this.state.minimumBet){
       } else {
          this.state.ContractInstance.play(number, {
             gas: 300000,
-            from: web3.eth.accounts[0],
-            value: web3.toWei(bet, 'ether')
+            from: this.web3.eth.accounts[0],
+            value: this.web3.toWei(bet, 'ether')
          }, (err, result) => {
             cb()
          })
@@ -143,8 +143,8 @@ if(parseFloat(bet) != 0.0 && parseFloat(bet) < this.state.minimumBet){
       } else {
          this.state.ContractInstance.bet(number, {
             gas: 300000,
-            from: web3.eth.accounts[0],
-            value: web3.toWei(bet, 'ether')
+            from: this.web3.eth.accounts[0],
+            value: this.web3.toWei(bet, 'ether')
          }, (err, result) => {
             cb()
          })
@@ -153,9 +153,19 @@ if(parseFloat(bet) != 0.0 && parseFloat(bet) < this.state.minimumBet){
 
 
 render(){
+      var warning = "";
+      if(typeof web3 == 'undefined'){
+      warning = (<div>
+        <h2> !!! Warning !!! </h2>
+          <strong>MetaMask or another browser based ETH Wallet could not be found. We highly recommend you use one, otherwise this website may not work. Check the Help section for instructions.</strong>
+        </div>);}
+
       return (
          <div className="main-container">
             <h1>JanKenPo Dapp</h1>
+
+              {warning}
+
 <div className="block">
                <b>Last game winners:</b> &nbsp;
                <span>{this.state.lastWinner}</span>
