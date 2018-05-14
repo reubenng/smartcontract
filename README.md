@@ -1,9 +1,17 @@
 # The Rock-Paper-Scissors Betting Smart Contract
 
+## Usage
+
+Use npm to run the front-end:
+
+```bash
+npm start
+```
+
 ## Basic Idea
 
 All implementation can be done on [Remix browser IDE](https://remix.ethereum.org).
-There is no need to actually deploy the contract and build frontend app (for now).
+There is no need to actually deploy the contract and build frontend app (for now). (Lol, too late).
 
 #### Game Part (COMPLETED)
 - All address (players) starts with ‘played’ bool false
