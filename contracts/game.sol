@@ -204,6 +204,7 @@ contract JanKenPonBet {
 			    betterAddress.transfer(betterInfo[betterAddress].betAmount
 			        * feePercentage / 100) ;
             }
+            totalBetValue = 0;
             return;
         }
         

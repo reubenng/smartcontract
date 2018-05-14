@@ -22,7 +22,7 @@ class App extends React.Component {
 [{"constant":false,"inputs":[],"name":"withdraw","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[],"name":"kill","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"totalBetValue","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"minimumBetValue","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"player1Add","outputs":[{"name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"actionIndex","type":"uint256"}],"name":"play","outputs":[],"payable":true,"stateMutability":"payable","type":"function"},{"constant":false,"inputs":[{"name":"playerBettedOn","type":"uint256"}],"name":"bet","outputs":[],"payable":true,"stateMutability":"payable","type":"function"},{"constant":true,"inputs":[{"name":"","type":"uint256"}],"name":"actions","outputs":[{"name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"","type":"address"}],"name":"betterInfo","outputs":[{"name":"betAmount","type":"uint256"},{"name":"playerBettedOn","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"owner","outputs":[{"name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"","type":"uint256"}],"name":"betters","outputs":[{"name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"better","type":"address"}],"name":"checkBetterBetted","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"","type":"uint256"}],"name":"winner_string","outputs":[{"name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"maxAmountOfBets","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"inputs":[],"payable":false,"stateMutability":"nonpayable","type":"constructor"},{"payable":true,"stateMutability":"payable","type":"fallback"},{"anonymous":false,"inputs":[{"indexed":false,"name":"player1action","type":"string"},{"indexed":false,"name":"player2action","type":"string"},{"indexed":false,"name":"winner","type":"string"}],"name":"revealActions","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"name":"better","type":"address"},{"indexed":false,"name":"betAmount","type":"uint256"},{"indexed":false,"name":"wonAmount","type":"uint256"}],"name":"revealBetWinners","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"name":"number_of_winners","type":"uint256"}],"name":"log_num_winners","type":"event"}])
 
 	   
-      this.state.ContractInstance = MyContract.at("0x37F46Bd3ca6784bA96023666852d84995b4b6405")
+      this.state.ContractInstance = MyContract.at("0x5398f5caa4b8f9b123e45da11bf51d531ef478f5")
 }
 
 componentDidMount(){
@@ -195,8 +195,8 @@ render(){
    </ul>
 
 <h2>Bet on JanKen</h2>
-	<b>How much Ether do you want to bet? <input className="bet-input" ref="ether-bet" type="number" placeholder={this.state.minimumBet}/></b> ether
-	<ul ref="ether-bet">
+	<b>How much Ether do you want to bet? <input className="bet-input" ref="ether-bet" ref="ether-bet" type="number" placeholder={this.state.minimumBet}/></b> ether
+	<ul>
                <li class="li_button" onClick={
                  () => {this.bet(1)}}>Player 1 Wins</li>
                <li class="li_button" onClick={
@@ -241,7 +241,7 @@ render(){
   network may make you run afoul of UK's <a href="http://www.legislation.gov.uk/ukpga/2005/19/contents/enacted">Gamling Act 2005</a> and may give up to 51 weeks in prison if you have the incorrect license.
   </p>
   <p>
-    The contract address is <a href="https://ropsten.etherscan.io/address/0x37f46bd3ca6784ba96023666852d84995b4b6405">0x37f46bd3ca6784ba96023666852d84995b4b6405</a> and the solidity source-code can be found on etherscan.
+    The contract address is <a href="https://ropsten.etherscan.io/address/0x5398f5caa4b8f9b123e45da11bf51d531ef478f5">0x5398f5caa4b8f9b123e45da11bf51d531ef478f5</a> and the solidity source-code can be found on etherscan.
   </p>
          </div>
       )
