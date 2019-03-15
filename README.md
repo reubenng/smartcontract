@@ -1,5 +1,9 @@
 # The Rock-Paper-Scissors Betting Smart Contract
 
+Go to 
+https://aloisklink.com/smartcontract/
+for demo.
+
 ## Usage
 
 Use npm to install necessary dependencies.
